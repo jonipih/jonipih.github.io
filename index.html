@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Harjoitussivut</title>
+    
+    
+
+</head>
+
+<body onload="paivitakommentit()">
+
+    <script>
+        {//käy läpi ihan sivun alhaalla olevan <p> elementin joka toimii sisältönä parille ekalle kommenteille
+        function paivitakommentit(){
+           
+            
+            pkommentoijat = JSON.parse(document.getElementById("kommentit_lista").innerHTML); //ei var,let tai const niin glopaali
+            
+
+            for (let i = 0; i < pkommentoijat.length; i++) {
+                let tekstipvm=pkommentoijat[i].aika;
+                const d = new Date(tekstipvm);
+                const pvm_aika=" "+d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+" "
+                let kommentti_123 = document.createElement("p");
+                let node = document.createTextNode(pvm_aika+" nimimerkki :"+pkommentoijat[i].nimimerkki+" kirjoitti:");
+                kommentti_123.appendChild(node);
+                let kommentti_234 = document.createElement("p");
+                let node2 = document.createTextNode(" "+pkommentoijat[i].kommentti_);
+                kommentti_234.appendChild(node2);
+                
+                let element = document.getElementById("demo");
+                element.appendChild(kommentti_123);
+                element.appendChild(kommentti_234);
+                let viiva = document.createElement("hr");
+                element.appendChild(viiva);
+                
+                
+            }
+
+        }
+    
+        function uusi_kommentti(){//lisää uuden kommentin
+            
+            let nimion=document.getElementById('kommentti_send').value;
+            let kuka=document.getElementById('fname').value;
+            let ajan=Date.now();
+            let jsonobjekti={"nimimerkki":kuka, "aika":ajan, "kommentti_":nimion}
+            pkommentoijat.push(jsonobjekti);
+            
+            document.getElementById("kommentit_lista").innerHTML=JSON.stringify(pkommentoijat);
+
+            kommentti_pituus=(pkommentoijat.length-1)
+            let tekstipvm=pkommentoijat[kommentti_pituus].aika;
+            const d = new Date(tekstipvm);
+            const pvm_aika=" "+d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+" "
+            let kommentti_123 = document.createElement("p");
+            let node = document.createTextNode(pvm_aika+" nimimerkki :"+pkommentoijat[kommentti_pituus].nimimerkki+" kirjoitti:");
+            kommentti_123.appendChild(node);
+            let kommentti_234 = document.createElement("p");
+            let node2 = document.createTextNode(" "+pkommentoijat[kommentti_pituus].kommentti_);
+            kommentti_234.appendChild(node2);
+                
+            let element = document.getElementById("demo");
+            element.appendChild(kommentti_123);
+            element.appendChild(kommentti_234);
+            let viiva = document.createElement("hr");
+            element.appendChild(viiva);
+            
+        }
+        
+    }
+    </script>
+    <!--otsikko-->
+    
+       
+            <div class="kommentti_container">
+                <div class="kommentti_kentta" id="demo"></div>
+                <div style="clear: both;" class="kommentointi_send"><p>nimimerkki:</p>
+                    <input type="text" id="fname" name="fname"><br>
+                    <p>KOMMENTTI</p>
+                    <textarea name="message" id="kommentti_send" rows="10" cols="100">kommentoi</textarea><br>
+                    <button type="button" onclick="uusi_kommentti()">Lähetä kommenttisi</button>
+                
+                </div>
+            </div>
+      
+    <!--cler both nollaa floatin-->
+    <div style="clear: both;" ><p></p></div>
+    
+    <!--alku kommentit JSON muodossa-->
+    <div><p id="kommentit_lista" style="display: none;">[{"nimimerkki":"Jori", "aika":0, "kommentti_":"hello"},{"nimimerkki":"markku", "aika":1704228115173, "kommentti_":"hey"}]</p></div>
+    </div>
+    <!--footer-->
+    <div class="footer"><h1>&#169 2023 Joni</h1></div>
+	
+
+
+</body>
+</html>
